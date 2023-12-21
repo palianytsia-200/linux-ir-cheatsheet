@@ -11,5 +11,15 @@ final-year coursework, KPI club lab work, and home-lab tinkering.
 
 ---
 
+## 0. Don't make it worse
 
-## TODO — fill out
+Before anything else:
+
+- Snapshot first if you can — VM snapshot, `dd` of disk, ZFS clone. Live
+  triage destroys evidence.
+- If you must work live, write to a **different** disk than the suspect one.
+- Time-stamp every command. `script -t triage.timing triage.log` keeps a
+  reproducible session.
+- Don't reboot. Memory is gone after reboot.
+
+---
