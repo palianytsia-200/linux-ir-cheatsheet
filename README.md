@@ -23,3 +23,28 @@ Before anything else:
 - Don't reboot. Memory is gone after reboot.
 
 ---
+
+## 1. Volatile data — collect first
+
+```bash
+# Memory dump (LiME or AVML if pre-installed; otherwise /proc/kcore copy)
+date -u +%FT%TZ
+uptime
+who
+last -F | head
+ss -anpe         # all sockets, with PID + uid
+ip -s addr
+ip -s route
+arp -an
+ip neigh
+ps auxfww
+ps -eo pid,ppid,user,start,etime,cmd --sort=start
+top -b -n1 -o %CPU | head -40
+lsof -P -n -i +c0  # all open sockets, no DNS lookups, no command truncation
+lsof +L1            # files with no link count (deleted but held)
+```
+
+Save all that to a single `volatile-$(date +%s).txt` and move it OFF the box
+before doing anything else.
+
+---
