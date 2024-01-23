@@ -48,3 +48,31 @@ Save all that to a single `volatile-$(date +%s).txt` and move it OFF the box
 before doing anything else.
 
 ---
+
+## 2. Persistence checks — where attackers hide
+
+```bash
+# Cron
+for u in $(cut -d: -f1 /etc/passwd); do crontab -u "$u" -l 2>/dev/null; done
+ls -la /etc/cron.* /var/spool/cron/
+
+# Systemd units (look for recently-modified)
+find /etc/systemd /lib/systemd /usr/lib/systemd /run/systemd -name '*.service' -newer /etc/hostname -ls
+systemctl list-unit-files --state=enabled --type=service
+
+# Login items (PAM, profile, etc.)
+ls -la /root/.{bash_profile,bashrc,bash_login,profile} ~/.profile ~/.bashrc 2>/dev/null
+ls -la /etc/profile.d/
+
+# SUID/SGID
+find / -xdev -type f \( -perm -4000 -o -perm -2000 \) -newer /etc/hostname -ls 2>/dev/null
+
+# SSH
+cat /etc/ssh/sshd_config | grep -E 'PermitRoot|PasswordAuth|Authorized'
+find / -xdev -name 'authorized_keys*' -ls 2>/dev/null
+
+# Init / rc
+ls -la /etc/init.d /etc/rc*.d /etc/rc.local 2>/dev/null
+```
+
+---
