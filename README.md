@@ -76,3 +76,24 @@ ls -la /etc/init.d /etc/rc*.d /etc/rc.local 2>/dev/null
 ```
 
 ---
+
+## 3. Log triage
+
+```bash
+# auth.log — failed logins, sudo, su
+grep -E 'Failed|Accepted|sudo|su\[' /var/log/auth.log | tail -100
+
+# All log files modified in the last 24h
+find /var/log -mtime -1 -ls
+
+# journald (if systemd)
+journalctl --since '2 hours ago' -p warning
+
+# Common service logs
+ls -la /var/log/{nginx,apache2,mysql,postgresql,redis,docker}/ 2>/dev/null
+
+# Tampering: gaps in log timestamps
+awk '{print $1, $2, $3}' /var/log/auth.log | uniq -c
+```
+
+---
