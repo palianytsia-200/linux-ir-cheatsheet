@@ -97,3 +97,20 @@ awk '{print $1, $2, $3}' /var/log/auth.log | uniq -c
 ```
 
 ---
+
+## 4. Network state
+
+```bash
+# Active connections, listening sockets
+ss -tunap | column -t
+netstat -anp 2>/dev/null
+
+# Recent DNS resolves (if systemd-resolved is up)
+journalctl -u systemd-resolved --since '6 hours ago' | grep query | tail -50
+
+# iptables / nftables current rules
+iptables-save 2>/dev/null
+nft list ruleset 2>/dev/null
+```
+
+---
