@@ -114,3 +114,22 @@ nft list ruleset 2>/dev/null
 ```
 
 ---
+
+## 5. Process forensics
+
+```bash
+# A given suspect PID
+PID=12345
+cat /proc/$PID/cmdline | tr '\0' ' '; echo
+readlink /proc/$PID/exe
+readlink /proc/$PID/cwd
+cat /proc/$PID/environ | tr '\0' '\n'
+ls -la /proc/$PID/fd/  # what files / sockets it has open
+cat /proc/$PID/maps | head  # memory map — look for unusual libs
+
+# Hash + capability
+sha256sum $(readlink /proc/$PID/exe)
+getcap $(readlink /proc/$PID/exe) 2>/dev/null
+```
+
+---
