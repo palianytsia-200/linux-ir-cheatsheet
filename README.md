@@ -133,3 +133,19 @@ getcap $(readlink /proc/$PID/exe) 2>/dev/null
 ```
 
 ---
+
+## 6. Filesystem timeline
+
+```bash
+# Recently modified files in writable dirs
+find /tmp /var/tmp /dev/shm -type f -mtime -7 -ls 2>/dev/null
+find / -xdev -type f -mtime -1 -ls 2>/dev/null | head -200
+
+# Hidden dirs
+find / -xdev -type d -name '.??*' -ls 2>/dev/null
+
+# Extended attributes (sometimes used for stealth)
+find / -xdev -exec lsattr {} + 2>/dev/null | grep -v '^-'
+```
+
+---
