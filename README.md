@@ -149,3 +149,19 @@ find / -xdev -exec lsattr {} + 2>/dev/null | grep -v '^-'
 ```
 
 ---
+
+## 7. Quick "is this rooted" sanity checks
+
+```bash
+# Compare ls + find + stat — rootkits often hide files at one layer
+diff <(ls -la /tmp) <(find /tmp -maxdepth 1 -ls)
+
+# Compare ps + /proc — rootkits hide PIDs
+diff <(ps -eo pid --no-headers | sort -n) <(ls /proc | grep -E '^[0-9]+$' | sort -n)
+
+# Compare ss + /proc/net/tcp — same idea for connections
+ss -anp | awk 'NR>1{print $5}' | sort -u
+awk 'NR>1{print $2}' /proc/net/tcp | sort -u
+```
+
+---
