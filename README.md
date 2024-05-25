@@ -165,3 +165,17 @@ awk 'NR>1{print $2}' /proc/net/tcp | sort -u
 ```
 
 ---
+
+## 8. Containers
+
+If the box runs Docker/Podman:
+
+```bash
+docker ps -a
+docker images
+docker inspect $(docker ps -q) | jq '.[].HostConfig | {Privileged, CapAdd, Binds}'
+podman ps -a
+crictl ps  # k8s nodes
+```
+
+---
