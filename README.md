@@ -179,3 +179,14 @@ crictl ps  # k8s nodes
 ```
 
 ---
+
+## 9. Send everything off-box safely
+
+```bash
+tar -czf /tmp/triage-$(hostname)-$(date +%s).tar.gz \
+    /tmp/volatile-*.txt /tmp/findings-*.txt /tmp/timeline-*.txt
+sha256sum /tmp/triage-*.tar.gz | tee /tmp/triage.sha256
+# Then `scp` (NOT to the suspect's network!) to your collection box.
+```
+
+---
