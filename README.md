@@ -190,3 +190,7 @@ sha256sum /tmp/triage-*.tar.gz | tee /tmp/triage.sha256
 ```
 
 ---
+
+## License
+
+MIT.
